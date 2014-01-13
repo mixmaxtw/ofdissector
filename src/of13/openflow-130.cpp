@@ -469,6 +469,27 @@ void DissectorContext::dissect_ofp_flow_stats(proto_tree* parent) {
     }
 }
 
+void DissectorContext::dissect_ofp_aggregate_stats_request(proto_tree* parent) {
+    ADD_SUBTREE(tree, parent, "ofp_aggregate_stats_request", sizeof(struct ofp_aggregate_stats_request));
+    ADD_CHILD(tree, "ofp_aggregate_stats_request.table_id", 1);
+    ADD_CHILD(tree, "padding", 3);
+    ADD_CHILD(tree, "ofp_aggregate_stats_request.out_port", 4);
+    ADD_CHILD(tree, "ofp_aggregate_stats_request.out_group", 4);
+    ADD_CHILD(tree, "padding", 4);
+    ADD_CHILD(tree, "ofp_aggregate_stats_request.cookie", 8);
+    ADD_CHILD(tree, "ofp_aggregate_stats_request.cookie_mask", 8);
+
+    this->dissect_ofp_match(tree);
+}
+
+void DissectorContext::dissect_ofp_aggregate_stats(proto_tree* parent) {
+    ADD_TREE(tree, "ofp_aggregate_stats");
+    ADD_CHILD(tree, "ofp_aggregate_stats.packet_count", 8);
+    ADD_CHILD(tree, "ofp_aggregate_stats.byte_count", 8);
+    ADD_CHILD(tree, "ofp_aggregate_stats.flow_count", 4);
+    ADD_CHILD(tree, "padding", 4);
+}
+
 void DissectorContext::dissect_ofp_multipart_request() {
     ADD_TREE(tree, "ofp_multipart_request");
 
@@ -485,6 +506,9 @@ void DissectorContext::dissect_ofp_multipart_request() {
     switch (type) {
         case OFPMP_FLOW:
             this->dissect_ofp_flow_stats_request(tree);
+            break;
+        case OFPMP_AGGREGATE:
+            this->dissect_ofp_aggregate_stats_request(tree);
             break;
         case OFPMP_TABLE_FEATURES:
             while ((this->_oflen - this->_offset) > 0) {
@@ -514,6 +538,11 @@ void DissectorContext::dissect_ofp_multipart_reply() {
         case OFPMP_FLOW:
             while ((this->_oflen - this->_offset) > 0) {
                 this->dissect_ofp_flow_stats(tree);
+            }
+            break;
+        case OFPMP_AGGREGATE:
+            while ((this->_oflen - this->_offset) > 0) {
+                this->dissect_ofp_aggregate_stats(tree);
             }
             break;
         case OFPMP_TABLE_FEATURES:
