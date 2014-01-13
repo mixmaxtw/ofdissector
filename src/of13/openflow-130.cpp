@@ -490,6 +490,15 @@ void DissectorContext::dissect_ofp_aggregate_stats(proto_tree* parent) {
     ADD_CHILD(tree, "padding", 4);
 }
 
+void DissectorContext::dissect_ofp_table_stats(proto_tree* parent) {
+    ADD_TREE(tree, "ofp_table_stats");
+    ADD_CHILD(tree, "ofp_table_stats.table_id", 1);
+    ADD_CHILD(tree, "padding", 3);
+    ADD_CHILD(tree, "ofp_table_stats.active_count", 4);
+    ADD_CHILD(tree, "ofp_table_stats.lookup_count", 8);
+    ADD_CHILD(tree, "ofp_table_stats.matched_count", 8);
+}
+
 void DissectorContext::dissect_ofp_multipart_request() {
     ADD_TREE(tree, "ofp_multipart_request");
 
@@ -543,6 +552,11 @@ void DissectorContext::dissect_ofp_multipart_reply() {
         case OFPMP_AGGREGATE:
             while ((this->_oflen - this->_offset) > 0) {
                 this->dissect_ofp_aggregate_stats(tree);
+            }
+            break;
+        case OFPMP_TABLE:
+            while ((this->_oflen - this->_offset) > 0) {
+                this->dissect_ofp_table_stats(tree);
             }
             break;
         case OFPMP_TABLE_FEATURES:

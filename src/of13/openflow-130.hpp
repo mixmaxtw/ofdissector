@@ -48,6 +48,7 @@ namespace openflow_130 {
         void dissect_ofp_flow_stats(proto_tree* parent);
         void dissect_ofp_aggregate_stats_request(proto_tree* parent);
         void dissect_ofp_aggregate_stats(proto_tree* parent);
+        void dissect_ofp_table_stats(proto_tree* parent);
         void dissect_ofp_table_features(proto_tree* parent);
         void dissect_ofp_table_feature_prop(proto_tree* parent);
         void dissect_ofp_portStatus();
