@@ -549,16 +549,16 @@ void DissectorContext::dissect_ofp_multipart_reply() {
                 this->dissect_ofp_flow_stats(tree);
             }
             break;
-        case OFPMP_AGGREGATE:
-            while ((this->_oflen - this->_offset) > 0) {
-                this->dissect_ofp_aggregate_stats(tree);
-            }
-            break;
-        case OFPMP_TABLE:
-            while ((this->_oflen - this->_offset) > 0) {
-                this->dissect_ofp_table_stats(tree);
-            }
-            break;
+        //case OFPMP_AGGREGATE:
+            //while ((this->_oflen - this->_offset) > 0) {
+                //this->dissect_ofp_aggregate_stats(tree);
+            //}
+            //break;
+        //case OFPMP_TABLE:
+            //while ((this->_oflen - this->_offset) > 0) {
+                //this->dissect_ofp_table_stats(tree);
+            //}
+            //break;
         case OFPMP_TABLE_FEATURES:
             while ((this->_oflen - this->_offset) > 0) {
                 this->dissect_ofp_table_features(tree);
